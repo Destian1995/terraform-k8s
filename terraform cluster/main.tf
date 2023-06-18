@@ -10,7 +10,7 @@ resource "yandex_compute_instance" "master" {
   zone = "ru-central1-a"
   boot_disk {
     initialize_params {
-      image_id = "fd8l4j2q0v3fj7g8h0n8"
+      image_id = "fd81hgrcv6lsnkremf32"
     }
   }
   network_interface {
@@ -31,7 +31,7 @@ resource "yandex_compute_instance" "worker" {
   zone = "ru-central1-a"
   boot_disk {
     initialize_params {
-      image_id = "fd8l4j2q0v3fj7g8h0n8"
+      image_id = "fd81hgrcv6lsnkremf32"
     }
   }
   network_interface {
