@@ -13,7 +13,7 @@ variable "network_id" {
   default = "enpvgmdd1bchmfcvi26c"
 }
 
-variable "subnet_ids" {
+variable "subnet_id" {
   type = string
   default = "e9b1nkfd9dv3auhpac4e"
 }
