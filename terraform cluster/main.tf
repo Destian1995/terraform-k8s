@@ -75,4 +75,3 @@ output "master_ip" {
 output "worker_ips" {
   value = [for instance in yandex_compute_instance.worker: instance.network_interface.0.ip_address]
 }
-
