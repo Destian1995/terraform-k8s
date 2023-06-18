@@ -19,9 +19,6 @@ resource "yandex_compute_instance" "master" {
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
-  service_account {
-    scopes = ["full"]
-  }
   resources {
     cores = 2
     memory = 4
@@ -43,9 +40,6 @@ resource "yandex_compute_instance" "worker" {
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
-  service_account {
-    scopes = ["full"]
-  }
   resources {
     cores = 2
     memory = 4
@@ -54,11 +48,6 @@ resource "yandex_compute_instance" "worker" {
 
 resource "yandex_vpc_network" "network" {
   name = "network"
-  subnet {
-    name = "subnet"
-    zone = "ru-central1-a"
-    v4_cidr_blocks = ["10.0.1.0/24"]
-  }
 }
 
 resource "yandex_vpc_subnet" "subnet" {
