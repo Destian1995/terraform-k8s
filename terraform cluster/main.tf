@@ -4,37 +4,74 @@ provider "yandex" {
   cloud_id     = "ru-central1"
   zone         = "ru-central1-a"
 }
-resource "yandex_msk_cluster" "netology" {
-  name = "netology-cluster"
-  description = "Netology MSK cluster"
-  network_id = var.network_id
-  subnet_ids = var.subnet_ids
+
+resource "yandex_compute_instance" "master" {
+  name = "master"
   zone = "ru-central1-a"
-  service_account_id = var.service_account_id
-  version = "1.19.9"
-  node_spec {
-    count = 1
-    role = "MASTER"
-    resources {
-      memory = 4
-      cores = 2
+  boot_disk {
+    initialize_params {
+      image_id = "fd8l4j2q0v3fj7g8h0n8"
     }
+  }
+  network_interface {
+    subnet_id = var.subnet_id
+  }
+  metadata = {
+    ssh-keys = "ubuntu:${file(var.public_key_path)}"
+  }
+  service_account {
+    scopes = ["full"]
+  }
+  resources {
+    cores = 2
+    memory = 4
   }
 }
 
-resource "yandex_msk_node_group" "netology" {
-  cluster_id = yandex_msk_cluster.example.id
-  name = "netology-node-group"
-  description = "Netology MSK node group"
-  node_template {
-    resources {
-      memory = 4
-      cores = 2
+resource "yandex_compute_instance" "worker" {
+  count = 4
+  name = "worker-${count.index}"
+  zone = "ru-central1-a"
+  boot_disk {
+    initialize_params {
+      image_id = "fd8l4j2q0v3fj7g8h0n8"
     }
   }
-  scale_policy {
-    fixed_scale {
-      size = 4
-    }
+  network_interface {
+    subnet_id = var.subnet_id
   }
+  metadata = {
+    ssh-keys = "ubuntu:${file(var.public_key_path)}"
+  }
+  service_account {
+    scopes = ["full"]
+  }
+  resources {
+    cores = 2
+    memory = 4
+  }
+}
+
+resource "yandex_vpc_network" "network" {
+  name = "network"
+  subnet {
+    name = "subnet"
+    zone = "ru-central1-a"
+    v4_cidr_blocks = ["10.0.1.0/24"]
+  }
+}
+
+resource "yandex_vpc_subnet" "subnet" {
+  name = "subnet"
+  zone = "ru-central1-a"
+  network_id = yandex_vpc_network.network.id
+  v4_cidr_blocks = ["10.0.1.0/24"]
+}
+
+output "master_ip" {
+  value = yandex_compute_instance.master.network_interface.0.ip_address
+}
+
+output "worker_ips" {
+  value = [for instance in yandex_compute_instance.worker: instance.network_interface.0.ip_address]
 }
