@@ -17,7 +17,7 @@ resource "yandex_compute_instance" "master" {
     subnet_id = var.subnet_id
   }
   metadata = {
-    ssh-keys = "ubuntu:${file(var.public_key_path)}"
+    ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
   service_account {
     scopes = ["full"]
@@ -41,7 +41,7 @@ resource "yandex_compute_instance" "worker" {
     subnet_id = var.subnet_id
   }
   metadata = {
-    ssh-keys = "ubuntu:${file(var.public_key_path)}"
+    ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
   service_account {
     scopes = ["full"]
