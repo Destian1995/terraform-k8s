@@ -4,37 +4,30 @@ provider "yandex" {
   cloud_id     = "ru-central1"
   zone         = "ru-central1-a"
 }
-resource "yandex_msk_cluster" "netology" {
-  name = "netology-cluster"
-  description = "Netology MSK cluster"
+resource "yandex_mdb_mongodb_cluster" "netology" {
+  name = "netology"
   network_id = var.network_id
   subnet_ids = var.subnet_ids
-  zone = "ru-central1-a"
-  service_account_id = var.service_account_id
-  version = "1.19.9"
-  node_spec {
-    count = 1
-    role = "MASTER"
-    resources {
-      memory = 4
-      cores = 2
-    }
+  node_count = 3
+  node {
+    zone = "ru-central1-a"
+    type = "mdb.mongodb.m1.small"
+  }
+  user {
+    name = "example"
+    password = "example"
   }
 }
 
-resource "yandex_msk_node_group" "netology" {
-  cluster_id = yandex_msk_cluster.example.id
-  name = "netology-node-group"
-  description = "Netology MSK node group"
-  node_template {
-    resources {
-      memory = 4
-      cores = 2
+resource "yandex_mdb_mongodb_user" "netology" {
+  name = "netology"
+  password = "netology1"
+  cluster_id = yandex_mdb_mongodb_cluster.example.id
+  database_name = "admin"
+  roles = [
+    {
+      database_name = "admin"
+      role_name = "readWrite"
     }
-  }
-  scale_policy {
-    fixed_scale {
-      size = 4
-    }
-  }
+  ]
 }
