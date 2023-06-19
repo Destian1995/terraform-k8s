@@ -1,7 +1,3 @@
-variable "yandex_token" {
-  type = string
-  default = "y0_AgAAAABKoqiNAATuwQAAAADNipS88UIe7R7eTAqEKnHTt3FDwpNSgPk"
-}
 
 variable "yandex_folder_id" {
   type = string
