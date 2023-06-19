@@ -19,6 +19,9 @@ resource "yandex_compute_instance" "master" {
   }
   network_interface {
     subnet_id = var.subnet_id
+    nat       = true
+    ipv6      = false
+
   }
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
