@@ -33,7 +33,7 @@ resource "yandex_compute_instance" "master" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y git"
+      "sudo apt-get install -y --fix-missing git"
     ]
   }
 }
