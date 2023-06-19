@@ -10,12 +10,12 @@ variable "yandex_folder_id" {
 
 variable "network_id" {
   type = string
-  default = "enp32mkvhi6jnhs81v34"
+  default = "enptdj6g77e3ud31f2s1"
 }
 
 variable "subnet_id" {
   type = string
-  default = "e9bjuus67vcr88a2lkqt"
+  default = "e9b30l5sjm0qc2srf89s"
 }
 
 variable "service_account_id" {
