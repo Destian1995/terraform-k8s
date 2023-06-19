@@ -21,7 +21,6 @@ resource "yandex_compute_instance" "master" {
     subnet_id = var.subnet_id
     nat       = true
     ipv6      = false
-
   }
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
@@ -29,6 +28,13 @@ resource "yandex_compute_instance" "master" {
   resources {
     cores = 2
     memory = 4
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y git"
+    ]
   }
 }
 
