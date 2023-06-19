@@ -1,5 +1,5 @@
 provider "yandex" {
-  token        = var.yandex_token
+  service_account_key_file = "key.json"
   folder_id    = var.yandex_folder_id
   cloud_id     = "ru-central1"
   zone         = "ru-central1-a"
