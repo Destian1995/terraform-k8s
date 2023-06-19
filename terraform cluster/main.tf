@@ -35,7 +35,6 @@ provisioner "remote-exec" {
     "sudo apt-get update",
     "sudo apt-get install -y --fix-missing git",
     "python3 -m pip install --user ansible-core==2.12.0",
-    "sudo apt-get update",
     "sudo apt-get install -y containerd",
     "cat <<EOF | sudo tee /etc/containerd/config.toml",
     "[plugins]",
