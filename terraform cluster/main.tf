@@ -5,12 +5,16 @@ provider "yandex" {
   zone         = "ru-central1-a"
 }
 
+data "yandex_compute_image" "ubuntu" {
+  family = "ubuntu-2004-lts"
+}
+
 resource "yandex_compute_instance" "master" {
   name = "master"
   zone = "ru-central1-a"
   boot_disk {
     initialize_params {
-      image_id = "fd81hgrcv6lsnkremf32"
+      image_id = data.yandex_compute_image.ubuntu.id
     }
   }
   network_interface {
@@ -31,7 +35,7 @@ resource "yandex_compute_instance" "worker" {
   zone = "ru-central1-a"
   boot_disk {
     initialize_params {
-      image_id = "fd81hgrcv6lsnkremf32"
+      image_id = data.yandex_compute_image.ubuntu.id
     }
   }
   network_interface {
