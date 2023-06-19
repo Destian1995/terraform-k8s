@@ -46,7 +46,7 @@ resource "yandex_compute_instance" "worker" {
   }
   resources {
     cores = 2
-    memory = 4
+    memory = 2
   }
 }
 
