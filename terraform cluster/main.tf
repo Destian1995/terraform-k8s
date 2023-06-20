@@ -29,32 +29,6 @@ resource "yandex_compute_instance" "master" {
     cores = 2
     memory = 4
   }
-  provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa")
-      host        = yandex_compute_instance.master.network_interface.0.nat_ip_address
-  }
-
-    inline = [
-     "sudo apt-get update",
-     "sudo apt-get install -y --fix-missing git",
-     "python3 -m pip install --user ansible-core==2.12.0",
-     "sudo apt-get install -y containerd",
-     "cat <<EOF | sudo tee /etc/containerd/config.toml",
-     "[plugins]",
-     "  [plugins.\"io.containerd.grpc.v1.cri\"]",
-     "    [plugins.\"io.containerd.grpc.v1.cri\".containerd]",
-     "      snapshotter = \"overlayfs\"",
-     "      [plugins.\"io.containerd.grpc.v1.cri\".containerd.default_runtime]",
-     "        runtime_type = \"io.containerd.runtime.v1.linux\"",
-     "        runtime_engine = \"/usr/bin/runc\"",
-     "        runtime_root = \"\"",
-     "EOF",
-     "sudo systemctl restart containerd"
-   ]
- }
 }
 
 resource "yandex_compute_instance" "worker" {
