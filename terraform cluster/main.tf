@@ -29,8 +29,14 @@ resource "yandex_compute_instance" "master" {
     cores = 2
     memory = 4
   }
-
 provisioner "remote-exec" {
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("~/.ssh/id_rsa")
+    host        = yandex_compute_instance.master.network_interface.0.nat_ip_address
+  }
+
   inline = [
     "sudo apt-get update",
     "sudo apt-get install -y --fix-missing git",
@@ -47,8 +53,8 @@ provisioner "remote-exec" {
     "        runtime_root = \"\"",
     "EOF",
     "sudo systemctl restart containerd"
-    ]
-  }
+  ]
+ }
 }
 
 resource "yandex_compute_instance" "worker" {
